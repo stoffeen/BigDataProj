@@ -13,28 +13,14 @@ def calculate_kn(gender, length, weight):
 
     gender['closest'] = closest
     KN = gender.sort_values(by=['closest']).head(10)
-    print(f'Recommended T-shirt size', KN['tshirt_size'].value_counts().idxmax())
-    print(f'Recommended Pants size', KN['pants_size'].value_counts().idxmax())
+    print(f'Recommended T-shirt size: ', KN['tshirt_size'].value_counts().idxmax())
+    print(f'Recommended Pants size: ', KN['pants_size'].value_counts().idxmax())
 
 
 
 def main():
     male_df = pd.read_csv('male_cleaned.csv')
     female_df = pd.read_csv('female_cleaned.csv')
-
-    male_data = male_df[['stature', 'weightkg', 'chestcircumference', 'waistcircumference', 'buttockcircumference']]
-    male_data.insert(5, column="tshirt_size", value="-")
-    male_data.insert(5, column="pants_size", value="-")
-    male_data.insert(6, column="tshirt_colour", value="-")
-    male_data.insert(6, column="pants_colour", value="-")
-
-    female_data = female_df[['stature', 'weightkg', 'chestcircumference', 'waistcircumference', 'buttockcircumference']]
-    female_data.insert(5, column="tshirt_size", value="-")
-    female_data.insert(5, column="pants_size", value="-")
-    female_data.insert(6, column="tshirt_colour", value="-")
-    female_data.insert(6, column="pants_colour", value="-")
-
-
 
     gender = input('Are you a Male/Female?: ')
     length = input('What is your length?(cm): ')
