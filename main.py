@@ -5,22 +5,32 @@ import math
 def calculate_kn(gender, length, weight):
     closest = []
 
-    for length, weight in zip(gender['stature'], gender['weightkg']):
-        delta_y = abs(length) - abs(length)
-        delta_x = abs(weight) - abs(weight)
+    for length_data, weight_data in zip(gender['stature'], gender['weightkg']):
+        delta_y = abs(length) - abs(length_data)
+        delta_x = abs(weight) - abs(weight_data)
         hypo = delta_y ** 2 + delta_x ** 2
         closest.append(math.sqrt(hypo))
 
     gender['closest'] = closest
-    KN = gender.sort_values(by=['closest']).head(10)
-    print(f'Recommended T-shirt size: ', KN['tshirt_size'].value_counts().idxmax())
-    print(f'Recommended Pants size: ', KN['pants_size'].value_counts().idxmax())
-
+    kn = gender.sort_values(by=['closest']).head(10)
+    print(f'Recommended T-shirt size', kn['tshirt_size'].value_counts().idxmax())
+    print(f'Recommended Pants size', kn['pants_size'].value_counts().idxmax())
 
 
 def main():
     male_df = pd.read_csv('male_cleaned.csv')
+    male_data = male_df[['stature', 'weightkg', 'chestcircumference', 'waistcircumference', 'buttockcircumference']]
+    male_data.insert(5, column="tshirt_size", value="-")
+    male_data.insert(5, column="pants_size", value="-")
+    male_data.insert(6, column="tshirt_colour", value="-")
+    male_data.insert(6, column="pants_colour", value="-")
+
     female_df = pd.read_csv('female_cleaned.csv')
+    female_data = female_df[['stature', 'weightkg', 'chestcircumference', 'waistcircumference', 'buttockcircumference']]
+    female_data.insert(5, column="tshirt_size", value="-")
+    female_data.insert(5, column="pants_size", value="-")
+    female_data.insert(6, column="tshirt_colour", value="-")
+    female_data.insert(6, column="pants_colour", value="-")
 
     gender = input('Are you a Male/Female?: ')
     length = input('What is your length?(cm): ')
@@ -32,7 +42,7 @@ def main():
         gender = male_df
         tshirt_size_male(gender)
         pants_size_male(gender)
-        calculate_kn(gender, weight, length)
+        calculate_kn(gender, length, weight)
     else:
         gender = female_df
         tshirt_size_female(gender)
@@ -265,8 +275,6 @@ def pants_size_female(gender):
 
     gender['pants_size'] = pants_size
     gender['pants_colour'] = pants_colour
-
-
 
 
 if __name__ == '__main__':
